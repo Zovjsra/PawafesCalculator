@@ -283,7 +283,7 @@
 
     function updateBasePoint() {
         basePoint = basePoint.map(function (value, index) {
-            return ~~(basePointAttr.oppPoint * ([1, 2])[basePointAttr.isTyphoon] * ([1, 1.1, 1.2, 1.3, 1.5])[basePointAttr.playState])
+            return Math.round(basePointAttr.oppPoint * ([1, 2])[basePointAttr.isTyphoon] * ([1, 1.1, 1.2, 1.3, 1.5])[basePointAttr.playState])
         })
         console.log(basePoint)
         for (i = 0; i < 4; i++) {
