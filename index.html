@@ -1,0 +1,387 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <title>パワフェス経験点計算ツール</title>
+</head>
+
+<style>
+    body {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-feature-settings: "palt";
+    }
+
+    .main-main {
+        margin: 10px
+    }
+
+    .switch-field {
+        display: flex;
+        margin: 10px 0px;
+        overflow: hidden;
+    }
+
+    .switch-field input {
+        position: absolute !important;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        width: 1px;
+        border: 0;
+        overflow: hidden;
+    }
+
+    .switch-field label {
+        background-color: green;
+        color: white;
+        font-size: 16px;
+        line-height: 1;
+        text-align: center;
+        padding: 8px 16px;
+        margin-right: -1px;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .switch-field label:hover {
+        cursor: pointer;
+    }
+
+    .switch-field input:checked+label {
+        background-color: #e4e4e4;
+        color: black;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<body>
+    <div id='title' class="main-main w3-container">
+        <h2>パワフェス経験点計算ツール</h2>
+        <span>パワフェス2016、2018対応、試合で取得できる経験点を計算するツールです。</span>
+    </div>
+    <div id='currentActPoint' class='w3-container main-main'>
+        <table class='w3-table w3-bordered w3-card-4' id='currentActPointTable'>
+            <tr>
+                <th></th>
+                <th>筋力</th>
+                <th>敏捷</th>
+                <th>技術</th>
+                <th>変化球</th>
+            </tr>
+            <tr>
+                <td>ベース値</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>現在行動点</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>行動点最大値</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>合計</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div id='mainTabs' class='main-main'>
+        <div id='tabSwitch' class="switch-field w3-container">
+            <input type="radio" id="tab-switch-one" name="switch-main" value="preGame" checked />
+            <label for="tab-switch-one">試合前設定</label>
+            <input type="radio" id="tab-switch-two" name="switch-main" value="inGame" />
+            <label for="tab-switch-two">試合中行動</label>
+        </div>
+        <div id='preGameSetting' class='w3-card-4' style="padding: 10px 0px;">
+            <div id='difficulty' class='w3-container'>
+                <div id='diffSwititch' class="switch-field">
+                    <input type="radio" id="diff-switch-one" name="difficulty" value="0" />
+                    <label for="diff-switch-one">ルーキー</label>
+                    <input type="radio" id="diff-switch-two" name="difficulty" value="1" checked />
+                    <label for="diff-switch-two">ノーマル</label>
+                    <input type="radio" id="diff-switch-three" name="difficulty" value="2" />
+                    <label for="diff-switch-three">達人</label>
+                </div>
+            </div>
+            <div id='gameNumber' class='w3-container'>
+                <div id='gameSwitch' class="switch-field">
+                    <input type="radio" id="game-switch-one" name="gameNumber" value="1" checked />
+                    <label for="game-switch-one">一回戦</label>
+                    <input type="radio" id="game-switch-two" name="gameNumber" value="2" />
+                    <label for="game-switch-two">二回戦</label>
+                    <input type="radio" id="game-switch-three" name="gameNumber" value="3" />
+                    <label for="game-switch-three">三回戦</label>
+                    <input type="radio" id="game-switch-four" name="gameNumber" value="4" />
+                    <label for="game-switch-four">準決勝</label>
+                    <input type="radio" id="game-switch-five" name="gameNumber" value="5" />
+                    <label for="game-switch-five">決勝戦</label>
+                    <input type="radio" id="game-switch-six" name="gameNumber" value="6" />
+                    <label for="game-switch-six">ラスボス</label>
+                </div>
+            </div>
+            <div id='oppPoint' class="w3-container">
+                <span>相手チーム経験値</span>
+                <input type="text" name='oppPoint' class=w3-input w3-border' id='oppPoint' value="0">
+            </div>
+            <div id='isTyphoon' class='w3-container'>
+                <div id='typhoonSwitch' class="switch-field">
+                    <input type="radio" id="typhoon-switch-one" name="typhoonSwitch" value="1" />
+                    <label for="typhoon-switch-one">台風</label>
+                    <input type="radio" id="typhoon-switch-two" name="typhoonSwitch" value="0" checked />
+                    <label for="typhoon-switch-two">なし</label>
+                </div>
+            </div>
+            <div id='playState' class='w3-container'>
+                <div id='playStateSwitch' class="switch-field">
+                    <input type="radio" id="play-switch-one" name="playSwitch" value="0" checked />
+                    <label for="play-switch-one">出場なし</label>
+                    <input type="radio" id="play-switch-two" name="playSwitch" value="1" />
+                    <label for="play-switch-two">部分出場<br>（投手三回未満）</label>
+                    <input type="radio" id="play-switch-three" name="playSwitch" value="2" />
+                    <label for="play-switch-three">部分出場<br>（投手六回未満）</label>
+                    <input type="radio" id="play-switch-four" name="playSwitch" value="3" />
+                    <label for="play-switch-four">部分出場<br>（野手、投手六回以上）</label>
+                    <input type="radio" id="play-switch-five" name="playSwitch" value="4" />
+                    <label for="play-switch-five">フル出場</label>
+
+                </div>
+            </div>
+        </div>
+        <div id='actPoint' class='w3-card-4' style="padding: 10px 16px;">
+            <div id='actPointButtons'>
+                <button class="w3-button w3-red" onclick="loseActPoint()">失点</button>
+                <button class="w3-button w3-blue" onclick="getActPoint()">点差広げ</button>
+                <button class='w3-button w3-green' onclick="undoActPoint()">一つ戻る</button>
+                <button class='w3-button w3-green' onclick="clearActPoint()">行動値クリア</button>
+                <button class='w3-button w3-green' onclick="toMaxActPoint()">最大行動値</button>
+            </div>
+            <div id='actPointTable'>
+                <table class='w3-table w3-bordered w3-hoverable' id='actPointTable'>
+                    <thead>
+                        <tr class='w3-white'>
+                            <th>行動</th>
+                            <th>筋力</th>
+                            <th>敏捷</th>
+                            <th>技術</th>
+                            <th>変化球</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    var basePoint = 0
+    var actPoint = [[0, 0, 0, 0]]
+    var basePoint = [0, 0, 0, 0]
+    var basePointAttr = {
+        difficulty: 1,
+        oppPoint: 0,
+        isTyphoon: 0,
+        playState: 0,
+        managerBonus: [1, 1, 1, 1]
+    }
+    var maxActPoint = [0, 150, 160, 170, 190, 210, 250]
+    var currentGame = 1
+    var totalPoint = [0, 0, 0, 0]
+    var actPointTable = {
+        'H': {
+            'name': '安打',
+            'points': [3, 3, 4, 0]
+        },
+        'h2B': {
+            'name': '二塁打',
+            'points': [7, 8, 5, 0]
+        },
+        'h3B': {
+            'name': '三塁打',
+            'points': [8, 10, 5, 0]
+        },
+        'HR': {
+            'name': '本塁打',
+            'points': [10, 0, 5, 0]
+        },
+        'SH': {
+            'name': '犠牲打',
+            'points': [0, 4, 4, 0]
+        },
+        'SF': {
+            'name': '犠牲フライ',
+            'points': [3, 5, 3, 0]
+        },
+        'SB': {
+            'name': '盗塁',
+            'points': [2, 8, 2, 0]
+        },
+        'onm': {
+            'name': '投手登板',
+            'points': [3, 1, 1, 3]
+        },
+        'oFB': {
+            'name': 'ストレート系',
+            'points': [7, 2, 3, 0]
+        },
+        'oBR': {
+            'name': '変化球',
+            'points': [0, 1, 7, 16]
+        },
+        'K': {
+            'name': '奪三振',
+            'points': [5, 1, 5, 5]
+        },
+        'FO': {
+            'name': 'フライアウト',
+            "points": [4, 5, 4, 2]
+        },
+        'GO': {
+            'name': 'ゴロアウト',
+            'points': [2, 2, 6, 4]
+        },
+        'DP': {
+            'name': 'ダブルプレイ',
+            'points': [3, 10, 10, 5]
+        }
+    }
+
+    function updateTotalPoint() {
+        totalPoint = totalPoint.map(function (value, index) {
+            return Math.min(~~(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]), actPoint[actPoint.length - 1][index]) + basePoint[index]
+        })
+        console.log(totalPoint)
+        for (i = 0; i < 4; i++) {
+            $('#currentActPointTable tr:eq(4) td').eq(i + 1).html(totalPoint[i])
+        }
+    }
+
+    function updateActPoint() {
+        for (i = 0; i < 4; i++) {
+            $('#currentActPointTable tr:eq(2) td').eq(i + 1).html(actPoint[actPoint.length - 1][i])
+            $('#currentActPointTable tr:eq(3) td').eq(i + 1).html(~~(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]))
+        }
+        updateTotalPoint()
+    }
+
+    function updateBasePoint() {
+        basePoint = basePoint.map(function (value, index) {
+            return ~~(basePointAttr.oppPoint * ([1, 2])[basePointAttr.isTyphoon] * ([1, 1.1, 1.2, 1.3, 1.5])[basePointAttr.playState])
+        })
+        console.log(basePoint)
+        for (i = 0; i < 4; i++) {
+            $('#currentActPointTable tr:eq(1) td').eq(i + 1).html(basePoint[i])
+        }
+        updateTotalPoint()
+    }
+
+    function undoActPoint() {
+        if (actPoint.length > 0) {
+            actPoint.pop()
+        }
+        updateActPoint()
+    }
+
+    function clearActPoint() {
+        actPoint = [[0, 0, 0, 0]]
+        updateActPoint()
+    }
+
+    function loseActPoint() {
+        actPoint.push(actPoint[actPoint.length - 1].map(function (point) {
+            return ~~(point * 0.96)
+        }))
+        updateActPoint()
+    }
+
+    function getActPoint() {
+        actPoint.push(actPoint[actPoint.length - 1].map(function (point) {
+            return ~~(point * 1.1)
+        }))
+        updateActPoint()
+    }
+
+    function toMaxActPoint() {
+        actPoint.push(Array(4).fill(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]))
+        updateActPoint()
+    }
+
+    function addActTableRow() {
+        for (k in actPointTable) {
+            let curRow = $('<tr>').appendTo($('#actPointTable tbody').last())
+            curRow.append($('<td>').html(actPointTable[k].name))
+            for (p of actPointTable[k].points) {
+                curRow.append($('<td>').html(p))
+            }
+            curRow.data('key', k)
+            curRow.click(function (event) {
+                let key = $(this).data().key
+                actPoint.push(actPoint[actPoint.length - 1].map(function (point, index) {
+                    return point + actPointTable[key].points[index]
+                }))
+                updateActPoint()
+            })
+        }
+    }
+    updateBasePoint()
+    updateActPoint()
+    addActTableRow()
+    $('#actPoint').hide()
+    $('#tabSwitch input[name="switch-main"]').change(function () {
+        console.log($(this))
+        if ($(this).val() == 'inGame') {
+            $('#actPoint').show()
+            $('#preGameSetting').hide()
+        } else {
+            $('#actPoint').hide()
+            $('#preGameSetting').show()
+        }
+    })
+    $('#gameSwitch input[name="gameNumber"]').change(function () {
+        currentGame = $(this).val()
+        updateActPoint()
+    })
+    $('input[name="difficulty"]').change(function () {
+        console.log($(this).val())
+        if (!isNaN($(this).val())) {
+            basePointAttr.difficulty = $(this).val()
+        }
+        updateActPoint()
+    })
+    $('input[name="oppPoint"]').change(function () {
+        if (!isNaN($(this).val())) {
+            basePointAttr.oppPoint = $(this).val()
+        }
+        updateBasePoint()
+    })
+    $('input[name="typhoonSwitch"]').change(function () {
+        if (!isNaN($(this).val())) {
+            basePointAttr.isTyphoon = $(this).val()
+        }
+        updateBasePoint()
+    })
+    $('input[name="playSwitch"]').change(function () {
+        if (!isNaN($(this).val())) {
+            basePointAttr.playState = $(this).val()
+        }
+        updateBasePoint()
+    })
+</script>
+
+</html>
