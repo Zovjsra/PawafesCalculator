@@ -61,6 +61,7 @@
         <h2>パワフェス経験点計算ツール</h2>
         <a href="https://github.com/Zovjsra/PawafesCalculator">https://github.com/Zovjsra/PawafesCalculator</a><br>
         <h4>パワフェス2016、2018対応、試合で取得できる経験点を計算するツールです。</h4>
+        <span>計算式通りに計算するつもりですけど結果が実際の経験値と異なることもいてしまい、原因をご存じの方々はぜひGithubで教えてください。</span>
     </div>
     <div id='currentActPoint' class='w3-container main-main'>
         <table class='w3-table w3-bordered w3-card-4' id='currentActPointTable'>
@@ -283,7 +284,7 @@
 
     function updateBasePoint() {
         basePoint = basePoint.map(function (value, index) {
-            return Math.round(basePointAttr.oppPoint * ([1, 2])[basePointAttr.isTyphoon] * ([1, 1.1, 1.2, 1.3, 1.5])[basePointAttr.playState])
+            return Math.round((basePointAttr.oppPoint * ([1, 2])[basePointAttr.isTyphoon] * ([1, 1.1, 1.2, 1.3, 1.5])[basePointAttr.playState]) / 10) * 10
         })
         console.log(basePoint)
         for (i = 0; i < 4; i++) {
