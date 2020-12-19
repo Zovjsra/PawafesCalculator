@@ -1,0 +1,22 @@
+{
+  "name": "pawafescalculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pureJs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zovjsra/PawafesCalculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zovjsra/PawafesCalculator/issues"
+  },
+  "homepage": "https://github.com/Zovjsra/PawafesCalculator#readme",
+  "dependencies": {
+    "vue": "^2.6.12"
+  }
+}
