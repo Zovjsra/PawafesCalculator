@@ -73,7 +73,7 @@ var actPointTable = {
 
 function updateTotalPoint() {
     totalPoint = totalPoint.map(function (value, index) {
-        return Math.min(~~(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]), ~~(actPoint[actPoint.length - 1][index] * ([[1, 1.3], [1, 1], [1, 1.3], [1, 1], [1, 1]])[index][basePointAttr.winPoint])) + basePoint[index]
+        return Math.min(~~(maxActPoint[currentGame] * ([0.5, 1, 1.3])[basePointAttr.difficulty]), ~~(actPoint[actPoint.length - 1][index] * ([[1, 1.3], [1, 1], [1, 1.3], [1, 1], [1, 1]])[index][basePointAttr.winPoint])) + basePoint[index]
     })
     console.log(totalPoint)
     for (i = 0; i < 5; i++) {
@@ -84,7 +84,7 @@ function updateTotalPoint() {
 function updateActPoint() {
     for (i = 0; i < 5; i++) {
         $('#currentActPointTable tr:eq(2) td').eq(i + 1).html(~~(actPoint[actPoint.length - 1][i] * ([[1, 1.3], [1, 1], [1, 1.3], [1, 1], [1, 1]])[i][basePointAttr.winPoint]))
-        $('#currentActPointTable tr:eq(3) td').eq(i + 1).html(~~(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]))
+        $('#currentActPointTable tr:eq(3) td').eq(i + 1).html(~~(maxActPoint[currentGame] * ([0.5, 1, 1.3])[basePointAttr.difficulty]))
     }
     updateTotalPoint()
 }
@@ -127,7 +127,7 @@ function getActPoint() {
 }
 
 function toMaxActPoint() {
-    actPoint.push(Array(5).fill(maxActPoint[currentGame] * ([0.5, 1, 1.2])[basePointAttr.difficulty]))
+    actPoint.push(Array(5).fill(maxActPoint[currentGame] * ([0.5, 1, 1.3])[basePointAttr.difficulty]))
     updateActPoint()
 }
 
