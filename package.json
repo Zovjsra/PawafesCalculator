@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/Zovjsra/PawafesCalculator#readme",
   "dependencies": {
-    "vue": "^2.6.12"
+    "vue": "^3.0.0"
   }
 }
